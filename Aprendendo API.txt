@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Document</title>
+</head>
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #9400d3;
+      color: white;
+    }
+        button{
+      background-color: green;
+      color: white;
+      width: 150px;
+      height: 50px;
+      border-color:red;
+    }
+
+    #DIV {
+      width: 300px;
+      height: 150px;
+      background-color: #800080;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 24px;
+      margin-top: 20px;
+    }
+  </style>
+<body>
+ <h2 id="texto">Texto que vai mudar através da busca na API</h2>
+ <button onclick="getData()">Buscar da API</button>
+ <script>
+  async function getData() {
+   const url = "https://meowfacts.herokuapp.com/?";
+   try {
+    const response = await fetch(url);
+    if (!response.ok) {
+     throw new Error(`Response status: ${response.status}`);
+    }
+
+    const json = await response.json();
+    document.getElementById("texto").innerHTML = json.data;
+   } catch (error) {
+    console.error(error.message);
+   }
+  }
+ </script>
+</body>
+</html>
