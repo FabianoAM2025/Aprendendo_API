@@ -1,60 +1,55 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-
 <head>
- <meta charset="UTF-8">
- <meta name="viewport" content="width=device-width, initial-scale=1.0">
- <title>Document</title>
-</head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title> Bichanos</title>
   <style>
     body {
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      height: 100vh;
+      height: 150vh;
       margin: 0;
-      background-color: #9400d3;
+      background-color: #000005;
       color: white;
     }
-        button{
-      background-color: green;
+button:hover {
+  background-color: green;
+}
+    button {
+      background-color: blue;
       color: white;
-      width: 150px;
+      width: 200px;
       height: 50px;
-      border-color:red;
-    }
-
-    #DIV {
-      width: 300px;
-      height: 150px;
-      background-color: #800080;
-      color: white;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 24px;
-      margin-top: 20px;
+      margin: 50px;
+      font-size: 16px;
     }
   </style>
+</head>
 <body>
- <h2 id="texto">Texto que vai mudar através da busca na API</h2>
- <button onclick="getData()">Buscar da API</button>
- <script>
-  async function getData() {
-   const url = "https://meowfacts.herokuapp.com/?";
-   try {
-    const response = await fetch(url);
-    if (!response.ok) {
-     throw new Error(`Response status: ${response.status}`);
+<h1>Curiosidades Felinas </h1>
+  <h3 id="texto">Clique no botão para ver uma curiosidade e uma imagem de gato</h3>
+  <button onclick="buscarTudo()">Curiosidade e Imagem</button>
+  <img id="imagem" src="https://cdn2.thecatapi.com/images/MTY3ODIyMQ.jpg" alt="Gato aleatório" width="200" height="100">
+  <script>
+    async function buscarTudo() {
+      try {
+        const curiosidadeResponse = await fetch("https://meowfacts.herokuapp.com/");
+        if (!curiosidadeResponse.ok) throw new Error("Erro ao buscar curiosidade");
+        const curiosidadeData = await curiosidadeResponse.json();
+        document.getElementById("texto").innerHTML = curiosidadeData.data;
+        const imagemResponse = await fetch("https://api.thecatapi.com/v1/images/search");
+        if (!imagemResponse.ok) throw new Error("Erro ao buscar imagem");
+        const imagemData = await imagemResponse.json();
+        const imagemUrl = imagemData[0].url;
+        document.getElementById("imagem").src = imagemUrl;
+      } catch (error) {
+        console.error("Erro ao buscar dados:", error);
+        document.getElementById("texto").innerHTML = "Ocorreu um erro ao buscar os dados 😿";
+      }
     }
-
-    const json = await response.json();
-    document.getElementById("texto").innerHTML = json.data;
-   } catch (error) {
-    console.error(error.message);
-   }
-  }
- </script>
+  </script>
 </body>
 </html>
